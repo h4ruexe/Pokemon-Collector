@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<!DOCTYPE html>
+<html lang="it">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Pokémon Card Collector</title>
+  <link rel="icon" type="image/png" href="favicon.png">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+  <div class="pokedex-frame">
+    
+    <header class="pokedex-header">
+      <div class="big-blue-lens"></div>
+      <div class="small-lights">
+        <span class="light red"></span>
+        <span class="light yellow"></span>
+        <span class="light green"></span>
+      </div>
+      <h1 class="main-title">Pokémon Card Collector</h1>
+    </header>
+
+    <div class="pokedex-screen">
+      
+      <nav class="pokedex-nav">
+        <button id="nav-my-collection" class="nav-tab active" onclick="switchTab('my-collection')">
+          La Mia Collezione
+        </button>
+        <button id="nav-all-sets" class="nav-tab" onclick="switchTab('all-sets')">
+          Lista Espansioni
+        </button>
+      </nav>
+
+      <!-- VISTA 1: La Mia Collezione -->
+      <div id="view-my-collection" class="view-section">
+        
+        <!-- BARRA DI RICERCA GLOBALE -->
+        <div class="global-search-container">
+          <h2>🔍 Cerca una Carta in Tutto il Database</h2>
+          <p class="subtitle">Scrivi il nome o numero (es. Charizard, 4) per trovare una carta di qualsiasi espansione e aggiungerla al volo!</p>
+          <div class="search-box">
+            <input type="text" id="global-search-input" placeholder="Esempio: Pikachu, Mewtwo, 15..." onkeyup="handleGlobalSearch(event)">
+            <button onclick="triggerGlobalSearch()">Cerca</button>
+          </div>
+          <div id="global-search-loading" class="hidden">Ricerca in corso su tutte le espansioni...</div>
+          <div id="global-search-results" class="cards-grid hidden"></div>
+        </div>
+
+        <hr class="section-divider">
+
+        <h2>Le Tue Espansioni Selezionate</h2>
+        <div id="active-sets-list" class="sets-grid"></div>
+
+        <div id="cards-viewer" class="cards-viewer hidden">
+          <div class="viewer-header">
+            <button class="back-btn" onclick="closeCardsViewer()">← Torna alle Espansioni</button>
+            <h3 id="current-set-title">Titolo Espansione</h3>
+          </div>
+
+          <div class="search-container">
+            <input type="text" id="card-search-input" placeholder="Cerca per nome o numero nell'espansione..." oninput="filterCards()">
+          </div>
+
+          <div id="loading" class="hidden">Caricamento carte...</div>
+          <div id="cards-grid" class="cards-grid"></div>
+        </div>
+      </div>
+
+      <!-- VISTA 2: Lista Completa Espansioni -->
+      <div id="view-all-sets" class="view-section hidden">
+        <h2>Seleziona le Espansioni da Collezionare</h2>
+        <p class="subtitle">Spunta le espansioni per farle apparire nella tua pagina principale.</p>
+        <div id="all-sets-list" class="sets-grid"></div>
+      </div>
+
+      <footer class="screen-footer">
+        <div class="camera-dots">
+          <span></span><span></span>
+        </div>
+        <div class="speaker-grille">
+          <span></span><span></span><span></span>
+        </div>
+      </footer>
+
+    </div>
+  </div>
+
+  	<script src="pokemon_database.js"></script>
+    <script src="script.js"></script>
+  </body>
+  </html>

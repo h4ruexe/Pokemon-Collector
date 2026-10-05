@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+  <meta charset="UTF-8">
+  <title>Generatore Database Pokémon</title>
+  <style>
+    body { font-family: sans-serif; background: #222; color: #fff; padding: 40px; text-align: center; }
+    button { padding: 12px 24px; font-size: 1rem; cursor: pointer; background: #dc0a2d; color: white; border: none; border-radius: 8px; }
+    #log { margin-top: 20px; color: #69f0ae; }
+  </style>
+</head>
+<body>
+  <h1>Generatore Database Carte Pokémon</h1>
+  <p>Clicca sul pulsante per scaricare i dati essenziali di tutte le espansioni e salvare il file <b>pokemon_database.json</b>.</p>
+  <button onclick="buildDatabase()">Avvia Generazione Database</button>
+  <div id="log"></div>
+
+  <script>
+    const API_KEY = '18a4a589-9e85-4876-a058-fcf42250c608';
+
+    async function buildDatabase() {
+      const log = document.getElementById('log');
+      log.textContent = 'Recupero elenco espansioni in corso...';
+
+      try {
+        // Fetch di tutte le espansioni
+        const resSets = await fetch('https://api.pokemontcg.io/v2/sets?select=id,name,releaseDate,images,total', {
+          headers: { 'X-Api-Key': API_KEY }
+        });
+        const setsData = await resSets.json();
+        const sets = setsData.data.sort((a, b) => new Date(b.releaseDate) - new Date(a.releaseDate));
+
+        log.textContent = `Trovate ${sets.length} espansioni. Preparazione file JSON...`;
+
+        const database = {
+          sets: sets,
+          cardsBySet: {}
+        };
+
+        // Salva il file JSON da scaricare
+        const dataStr = "data:text/json;charset=utf-8," + encodeURIComponent(JSON.stringify(database, null, 2));
+        const downloadAnchor = document.createElement('a');
+        downloadAnchor.setAttribute("href", dataStr);
+        downloadAnchor.setAttribute("download", "pokemon_database.json");
+        document.body.appendChild(downloadAnchor);
+        downloadAnchor.click();
+        downloadAnchor.remove();
+
+        log.textContent = '✅ File pokemon_database.json generato e scaricato con successo!';
+      } catch (err) {
+        log.textContent = '❌ Errore durante la generazione: ' + err.message;
+      }
+    }
+  </script>
+</body>
+</html>
